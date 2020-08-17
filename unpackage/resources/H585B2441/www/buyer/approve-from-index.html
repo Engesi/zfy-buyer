@@ -1,0 +1,172 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>交易管理</title>
+		<meta name="viewport" content="width=device-width,initia l-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="../css/reset.css"/>
+		<link rel="stylesheet" type="text/css" href="../css/style.css"/>
+		<link rel="stylesheet" type="text/css" href="../css/common.css"/>
+		<link rel="stylesheet" type="text/css" href="../fonts/iconfont.css"/>
+<link rel="stylesheet" type="text/css" href="../../css/mui.poppicker.css"/>
+		<link rel="stylesheet" type="text/css" href="../css/mui.picker.min.css"/>
+		<link rel="stylesheet" href="http://at.alicdn.com/t/font_1804860_ayl3ny90m4p.css" />
+		<style type="text/css">
+		.notice a {
+			display: block;
+		}
+		.font-lighter{font-size: 16px;color: #666;}
+		.mui-icon-arrowright{color: #999;}
+		.mui-scroll-wrapper{top: 20px}
+		/*.mui-pull-top-pocket{top: 20px;}*/
+
+			i {padding-top:10px ;}
+			.list-state {
+				background: none;
+				color: #000;
+			}
+			
+			.read {
+				height: 100%;
+			}
+			
+			.delete {
+				height: 100%;
+			}
+			
+			
+			.sxpop {
+				position: fixed;
+				z-index: 999;
+				width: 95%;
+				margin: 0 auto;
+				background-color: #f2f2f2;
+				padding: 10px;
+			}
+			
+			h2 {
+				    border-left: 3px solid #ff7b57;
+				    font-size: 1.375rem;
+				    color: #3b3c42;
+				    padding-left: 10px;
+				    margin-top: 15px;
+				    margin-bottom: 10px;
+			}
+			
+			.sxwrap>div {
+				display: flex;
+				justify-content: space-around;
+				margin-bottom: 15px;
+			}
+			
+			.sxwrap .active {
+				background-color: #476bb2;
+			}
+			
+			.timewrap span {
+				display: inline-block;
+				width: 49%;
+				background-color: #cccccc;
+				color: #fff;
+				text-align: center;
+				line-height: 30px;
+				border: #797979 1px solid;
+			}
+			
+			.sxbtnwrap {
+				margin-top: 15px;
+				text-align: right;
+			}
+			
+			.mui-bar-nav {
+				-webkit-box-shadow: none;
+				    box-shadow: none;
+			}
+			
+			.mui-bar .mui-title {
+				    right: 40px;
+				    left: 40px;
+				    display: inline-block;
+				    overflow: hidden;
+				    width: 50%;
+				    margin: 0 auto;
+				    text-overflow: ellipsis;
+						text-align: center;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="app">
+		
+		
+		<!--列表部分 start-->
+		
+		</div>
+		<!--合同列表部分 end-->
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/jquery-1.7.2.min.js"></script>
+		<script src="../js/all.js"></script>
+		<script src="../js/mui.picker.min.js"></script>
+		<script src="../js/mui.poppicker.js"></script>
+		<script src="../js/city.data-3.js"></script>
+		<script src="../js/vue.min.js"></script>
+		<script>
+			var page = null;
+			mui.init({
+				gestureConfig: {
+				        tap: true, //默认为false
+								longtap: true
+				      },
+			
+						 subpages: [
+							 {
+							 							 url:'approve-from-done.html',
+							 							       id:'approve-from-done.html',
+							 							       styles:{
+							 							         top:'0px',//mui标题栏默认高度为45px；
+							 							         bottom:'0px'//默认为0px，可不定义；
+							 							       }
+							 },
+							 {
+							 url:'approve-from-doing.html',
+							       id:'approve-from-doing.html',
+							       styles:{
+							         top:'0px',//mui标题栏默认高度为45px；
+							         bottom:'0px'//默认为0px，可不定义；
+							       }
+						 },
+						
+						 ],
+						 beforeback: function() {
+						 				//获得父页面的webview
+						 				var ws = plus.webview.currentWebview().opener();
+						 　　　　 //触发父页面的自定义事件(refresh),从而进行刷新
+						 				mui.fire(ws, 'refresh');
+						          //返回true,继续页面关闭逻辑
+						          return true;
+						      }
+			
+			});
+			var vm = new Vue({
+				el: '#app',
+				data(){
+					return {
+						
+					}
+				},
+				methods: {
+					
+				},
+				created() {
+				
+			
+				}
+			})
+			
+			
+			
+		</script>
+	</body>
+
+</html>

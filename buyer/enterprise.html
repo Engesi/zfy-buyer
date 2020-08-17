@@ -1,0 +1,419 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>通知</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<link href="../css/mui.picker.min.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="../css/reset.css" />
+		<link rel="stylesheet" type="text/css" href="../css/style.css" />
+		<link rel="stylesheet" type="text/css" href="../css/common.css"/>
+		<link rel="stylesheet" type="text/css" href="../../css/mui.poppicker.css"/>
+		<link rel="stylesheet" type="text/css" href="../css/mui.picker.min.css"/>
+		<link rel="stylesheet" href="http://at.alicdn.com/t/font_1804860_sjrdslu2hlq.css" />
+		<style type="text/css">
+			.notice a {
+				display: block;
+			}
+			.font-lighter{font-size: 16px;color: #666;}
+			.mui-icon-arrowright{color: #999;}
+			.mui-scroll-wrapper{top: 20px}
+			#shangji {
+				width: 100%;
+			}
+			
+			#todayRight {
+				    width: 20%;
+				    background-color: #fff;
+				    margin-bottom: 10px;
+				    box-shadow: 0px 0px 9px 0px rgba(98, 98, 98, 0.15);
+				    border-radius: 5px;
+				    padding: 20px 2px 20px 2px;
+				    position: relative;
+						margin-left: 2%;
+						font-size: 12px;
+						text-align: center;
+				}
+				.list-state {
+					background: none;
+					color: #000;
+				}
+				
+				.icontop {
+					font-size: 32px;
+				}
+				
+				.searchwrap {
+					position: fixed;
+					    width: 95%;
+					    margin-bottom: 50px;
+					    z-index: 999;
+				}
+		</style>
+	</head>
+
+	
+	<body class="">
+		<!-- <div class="net"><span>返回<br />正式版</span></div> -->
+<!--<div id="pullrefresh" class="mui-content mui-scroll-wrapper">
+<div class="mui-scroll">-->
+		<!--通知模块 start-->
+		<div id="app">
+			
+		
+		<div class="mui-off-canvas-wrap mui-draggable">
+		<div class="pad-lr-10 mui-inner-wrap">
+			
+				<aside class="mui-off-canvas-right">
+				  <div class="mui-scroll-wrapper">
+				    <div class="mui-scroll" id="offCanvasShow">
+				     <div class="purmethod">
+							 <div>地区筛选</div>
+							 <div id="chooseArea" style="text-align: center;"><button type="button" class="mui-btn mui-btn-outlined">选择地区</button></div>
+							 <div id="area" style="text-align: center;"></div>
+						 </div>
+						 
+						 <div>
+							 <ul class="mui-table-view">
+							        <li class="mui-table-view-cell mui-collapse">
+							            <a href="javascript" class="mui-navigate-right">主营业务</a>
+							 					 <div>
+							 					 						 								 <button type="button" class="mui-btn mui-btn-outlined">全部</button>
+							 					 						 								 <button type="button" class="mui-btn mui-btn-outlined">现金交易</button>
+							 					 						 								 <button type="button" class="mui-btn mui-btn-outlined">现金交易</button>
+							 					 </div>
+							            <div class="mui-collapse-content">
+							                <div>
+							                						 								 <button type="button" class="mui-btn mui-btn-outlined">全部</button>
+							                						 								 <button type="button" class="mui-btn mui-btn-outlined">现金交易</button>
+							                						 								 <button type="button" class="mui-btn mui-btn-outlined">现金交易</button>
+							                </div>
+							            </div>
+							        </li>
+							    </ul>
+						 </div>
+						 
+						 
+						 
+						 
+						 
+						 
+						 
+						 <div class="propbutton">
+						 	<div id="reset">重置</div>
+						 	<div id="confirm">确定</div>
+						 </div>
+				    </div>
+				  </div>
+				</aside>
+				
+			<!--搜索模块 start-->
+			
+				<div class="searchwrap">
+					<div class="search">
+						<div class="pr">
+							<input placeholder="请输入搜索内容" class="mar-0 wid-100">
+						
+						</div>
+					</div>
+					<div class="maintop" style="padding-bottom: 15px;">
+						<div class="mainleft">
+							<div @tap="brain()">智能排序<i class="icon-weibiaoti7 iconfont"></i></div>
+							<div @tap="money()">注册资本<i class="icon-weibiaoti7 iconfont"></i></div>
+						</div>
+						<div class="mainright"><i class="icon-shaixuan iconfont" id="shaixuan"></i></div>
+					</div>
+				</div>
+				
+				
+					
+					<div class="main" id="refreshContainer" style="height: 100%;overflow-y: auto;">
+					<div class="pad-top-70 mui-scroll" style="margin-top: 40px;">
+						<a href="enterprise-detail.html" @tap="setStorageComId(item.id)" withtitle="false" v-for="(item, index) in companyList">
+							<div class="priseLi">
+								<div class="priseLogo">
+									<img src="../dist/favicon.ico" />
+								</div>
+								<div class="priseDetail">
+									<div class="pd-1">{{item.company_name}}</div>
+									<div class="pd-2">
+										<div>所在地区</div>
+										<span>{{item.province_name}}{{item.city_name}}</span>
+									</div>
+									<div class="pd-2">
+										<div>注册资本</div>
+										<span>{{item.reg_capital}}万元</span>
+									</div>
+								</div>
+							</div>
+						</a>
+						
+						
+					</div>
+			</div>
+			
+			
+	
+		
+		
+		
+		  <!-- 菜单容器 -->
+		  
+		  <!-- 主页面容器 -->
+		  
+		</div>
+		</div>
+		</div>
+		
+<!--</div>
+</div>-->
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/mui.picker.min.js"></script>
+		<script src="../js/jquery-1.7.2.min.js"></script>
+		<script src="../js/all.js"></script>
+		<script src="../js/mui.poppicker.js"></script>
+		<script src="../js/city.data-3.js"></script>
+		<script src="../js/vue.min.js"></script>
+		<!--<script src="../js/mui.pullToRefresh.js"></script>
+		<script src="../js/mui.pullToRefresh.material.js"></script>-->
+		<!--<script type="text/javascript">
+			mui.init({
+				pullRefresh: {
+					container: '#pullrefresh',
+					down: {
+						height:10,
+						callback: pullupRefresh
+					}
+				}
+			});
+			function pullupRefresh(){
+				setTimeout(function() {
+					mui('#pullrefresh').pullRefresh().endPulldownToRefresh();
+				},1500)
+			}
+		</script>-->
+		<script>
+			mui.init({
+				gestureConfig: {
+				        longtap: true, //默认为false
+								longtap: true
+				      },
+				pullRefresh : {
+				   container:"#refreshContainer",//下拉刷新容器标识，querySelector能定位的css选择器均可，比如：id、.class等
+				   up : {
+				     height:50,//可选.默认50.触发上拉加载拖动距离
+											auto:false,//可选,默认false.自动上拉加载一次
+											contentrefresh : "正在加载...",//可选，正在加载状态时，上拉加载控件上显示的标题内容
+											contentnomore:'没有更多数据了',//可选，请求完毕若没有更多数据时显示的提醒内容；
+				     callback :pullfresh //必选，刷新函数，根据具体业务来编写，比如通过ajax从服务器获取新数据；
+				   }
+				 }
+			});
+			mui.plusReady(function(){
+			  var self = plus.webview.currentWebview(); //获取当前页面
+			  var url = self.getURL();  //当前页面的地址
+			   $('#todayRight').hide();
+				 
+				 
+			})
+			
+			var vm = new Vue({
+				el: '#app',
+				data(){
+					return{
+						companyList: [],
+						msg: 'asdsad',
+						page: 1,
+						pageSize: 5,
+						type: 1,
+						isShow: false,
+						sortTime: 'desc',
+						sortCapital: 'desc'
+					}
+				},
+				methods: {
+					pageHandler: function (pageNum) {
+						   	        	  this.page = pageNum;
+						   	        	  let postData= {}
+						   	        	  
+						   				  $.ajax({
+						   				  					 	url: zfyurl+"/app/api/company/list",
+						   				  					 	data: {
+																			'pageSize': this.pageSize,
+																			'pageNum': this.page,
+																		},
+						   				  					 	type:"POST",
+						   				  					 	dataType:'jsonp',
+						   				  					 	success: res=>{
+						   				  					 		if(res.code=="M000000"){
+																				let companyList = res.data;
+																				
+																				this.companyList = companyList;
+																				setTimeout(function(){
+																					$('li:last').css('margin-bottom','151px')
+																				},1000)
+						   				  					 		}
+						   				  					 		if(res.code=="E000000"){
+						   				  					 			mui.alert(res.info)
+						   				  					 		}
+						   				  					 		
+						   				  					 	}
+						   				  				})
+					 },
+					 setStorageComId(id){
+					 						 localStorage.setItem('comId',id)
+					 },
+					 brain(){
+						 if(this.sortTime=='desc'){
+							 this.sortTime = 'asc'
+						 }else {
+							 this.sortTime = 'desc'
+						 }
+						 $.ajax({
+						 					 	url: zfyurl+"/app/api/company/list",
+						 					 	data: {
+						 							'pageSize': this.pageSize,
+						 							'pageNum': 1,
+													'sortTime': this.sortTime
+						 						},
+						 					 	type:"POST",
+						 					 	dataType:'jsonp',
+						 					 	success: res=>{
+						 					 		if(res.code=="M000000"){
+						 								let companyList = res.data;
+						 								this.companyList = companyList;
+						 								setTimeout(function(){
+						 									$('li:last').css('margin-bottom','151px')
+						 								},1000)
+						 					 		}
+						 					 		if(res.code=="E000000"){
+						 					 			mui.alert(res.info)
+						 					 		}
+						 					 		
+						 					 	}
+						 				})
+					 },
+					 money(){
+						 if(this.sortCapital=='desc'){
+						 							 this.sortCapital = 'asc'
+						 }else {
+						 							 this.sortCapital = 'desc'
+						 }
+						 $.ajax({
+						 					 	url: zfyurl+"/app/api/company/list",
+						 					 	data: {
+						 							'pageSize': this.pageSize,
+						 							'pageNum': 1,
+						 							'sortCapital': this.sortCapital
+						 						},
+						 					 	type:"POST",
+						 					 	dataType:'jsonp',
+						 					 	success: res=>{
+						 					 		if(res.code=="M000000"){
+						 								let companyList = res.data;
+						 								
+						 								this.companyList = companyList;
+						 								setTimeout(function(){
+						 									$('li:last').css('margin-bottom','151px')
+						 								},1000)
+						 					 		}
+						 					 		if(res.code=="E000000"){
+						 					 			mui.alert(res.info)
+						 					 		}
+						 					 		
+						 					 	}
+						 				})
+					 }
+				},
+				created(){
+					this.pageHandler(1);
+				}
+			})
+			
+			function pullfresh(){
+				vm.page+=1;
+										$.ajax({
+														url: zfyurl+"/app/api/company/list",
+														data: {
+															'pageSize': vm.pageSize,
+															'pageNum': vm.page,
+														},
+														type:"POST",
+														dataType:'jsonp',
+														success: res=>{
+															if(res.code=="M000000"){
+																let companyList = res.data;
+																$.each(companyList,(index,item)=>{
+																	vm.companyList.push(companyList[index]);
+																	this.endPullupToRefresh(false);
+																})
+															
+																setTimeout(function(){
+																	$('li').css('margin-bottom','10px')
+																	$('li:last').css('margin-bottom','151px')
+																},1000)
+															}
+															if(res.code=="E000000"){
+																mui.alert(res.info)
+															}
+															
+														}
+												})
+			}
+			
+		var _getParam = function(obj, param) {
+		            return obj[param] || '';
+		        };
+
+			function closeChoose(){
+			　　cityPicker.hide();
+			}
+			
+			$('#chooseArea').bind('tap',function(){
+				console.log('all')
+				var  cityPicker = new mui.PopPicker({
+				    layer: 3
+				});
+				cityPicker.setData(cityData3); 
+				cityPicker.show(function(items) {
+				                var address = _getParam(items[0], 'text') + " " + _getParam(items[1], 'text') + " " + _getParam(items[2], 'text');
+				               $('#area').text(address)
+				                console.log(address)
+				                // 返回 false 可以阻止选择框的关闭
+				                //return false;
+				            });
+				
+			})
+			
+			$('.main').bind('tap',function(){
+				if(mui('.mui-off-canvas-wrap').offCanvas().isShown()){
+					mui('.mui-off-canvas-wrap').offCanvas('close');
+				}
+			})
+			
+			
+			
+			
+			$('#confirm').bind('tap',function(){
+				if(mui('.mui-off-canvas-wrap').offCanvas().isShown()){
+					mui('.mui-off-canvas-wrap').offCanvas('close');
+				}
+			})
+			
+			$('#shaixuan').bind('tap',function(){
+				mui('.mui-off-canvas-wrap').offCanvas().show('right');
+				console.log(123)
+				console.log(mui('.mui-off-canvas-wrap').offCanvas().isShown('right'));//true)
+			})
+			
+			//给最后一个li加下边距
+			$('li:last').css('margin-bottom','151px')
+			
+			
+		</script>
+		
+	</body>
+
+</html>

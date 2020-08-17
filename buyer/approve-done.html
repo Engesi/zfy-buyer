@@ -1,0 +1,393 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>交易管理</title>
+		<meta name="viewport" content="width=device-width,initia l-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="../css/reset.css"/>
+		<link rel="stylesheet" type="text/css" href="../css/style.css"/>
+		<link rel="stylesheet" type="text/css" href="../css/common.css"/>
+		<link rel="stylesheet" type="text/css" href="../fonts/iconfont.css"/>
+<link rel="stylesheet" type="text/css" href="../../css/mui.poppicker.css"/>
+		<link rel="stylesheet" type="text/css" href="../css/mui.picker.min.css"/>
+		<link rel="stylesheet" href="http://at.alicdn.com/t/font_1804860_ayl3ny90m4p.css" />
+		<style type="text/css">
+		.notice a {
+			display: block;
+		}
+		.font-lighter{font-size: 16px;color: #666;}
+		.mui-icon-arrowright{color: #999;}
+		.mui-scroll-wrapper{top: 20px}
+		/*.mui-pull-top-pocket{top: 20px;}*/
+
+			i {padding-top:10px ;}
+			.list-state {
+				background: none;
+				color: #000;
+			}
+			
+			.read {
+				height: 100%;
+			}
+			
+			.delete {
+				height: 100%;
+			}
+			
+			.sxpop {
+				position: fixed;
+				z-index: 999;
+				width: 95%;
+				margin: 0 auto;
+				background-color: #f2f2f2;
+				padding: 10px;
+			}
+			
+			h2 {
+				    border-left: 3px solid #ff7b57;
+				    font-size: 1.375rem;
+				    color: #3b3c42;
+				    padding-left: 10px;
+				    margin-top: 15px;
+				    margin-bottom: 10px;
+			}
+			
+			.sxwrap>div {
+				display: flex;
+				justify-content: space-around;
+				margin-bottom: 15px;
+			}
+			
+			.sxwrap .active {
+				background-color: #476bb2;
+			}
+			
+			.timewrap span {
+				display: inline-block;
+				width: 49%;
+				background-color: #cccccc;
+				color: #fff;
+				text-align: center;
+				line-height: 30px;
+				border: #797979 1px solid;
+			}
+			
+			.sxbtnwrap {
+				margin-top: 15px;
+				text-align: right;
+			}
+			
+			.mui-bar-nav {
+				-webkit-box-shadow: none;
+				    box-shadow: none;
+			}
+			
+			.mui-bar .mui-title {
+				    right: 40px;
+				    left: 40px;
+				    display: inline-block;
+				    overflow: hidden;
+				    width: 50%;
+				    margin: 0 auto;
+				    text-overflow: ellipsis;
+						text-align: center;
+			}
+		
+		</style>
+	</head>
+	<body>
+		<div id="app" v-cloak>
+		<header class="mui-bar mui-bar-nav">
+				  <span class="index-left">
+				    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+					</span>
+					<h1 class="mui-title">审批管理</h1>
+					<div class="ui-top-right">
+							<i class="leftIcon"><img src="../images/search-icon.png" style="width: 20px" id="sousuo"></img></i>
+							<i class="rightIcon"><img src="../images/sx-icon.png" style="width: 20px" id="shaixuan" ></img></i>
+					</div>
+					
+		</header>
+		<div class="approveTop">
+			<div id="doing" class="active"><a href="approve-wait.html" withTitle="false">待审批</a></div>
+			<div id="done">已审批<div class="blueline"></div></div>
+		</div>
+		<!--列表部分 start-->
+		<div class="pad-top-100 mui-content mui-scroll-wrapper" id="refreshContainer">
+			
+			<div class="search">
+			
+			</div>
+			
+			<div class="mui-scroll">
+					<ul class="list approveList">
+						<li v-for="(item, index) in approveList" @tap = "setApproveId(item.id, item.processId, item.comId, item.curApprove, item.instId)">
+							<a href="approve-detail.html" withTitle="false">
+								<div class="approveTitle">{{item.instName}}</div>
+								<div class="approveContainer">
+									<div>
+										<div>
+											<img src="../images/stealth_fill.png"/>
+											<span class="greencolor" v-if="item.status==1">同意</span>
+											<span class="redcolor" v-else-if="item.status==2">不同意</span>
+											<span class="bluecolor" v-else-if="item.status==3">转交</span>
+										</div>
+										<div>
+											<img src="../images/addpeople_fill.png"/>
+											<span>{{item.userName}}</span>
+										</div>
+									</div>
+									<div>
+										<div>
+											<img src="../images/flag_fill.png"/>
+											<span>{{item.typeName}}</span>
+										</div>
+										<div>
+											<img src="../images/time_fill.png"/>
+											<span>{{item.applyTime}}</span>
+										</div>
+									</div>
+								</div>
+							</a>
+						</li>
+									
+					  </ul>
+			</div>
+			
+		</div>
+		</div>
+		<!--合同列表部分 end-->
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/jquery-1.7.2.min.js"></script>
+		<script src="../js/all.js"></script>
+		<script src="../js/mui.picker.min.js"></script>
+		<script src="../js/mui.poppicker.js"></script>
+		<script src="../js/city.data-3.js"></script>
+		<script src="../js/vue.min.js"></script>
+		<script>
+			mui.init({
+				gestureConfig: {
+				        tap: true, //默认为false
+								longtap: true
+				      },
+				pullRefresh : {
+				   container:"#refreshContainer",//下拉刷新容器标识，querySelector能定位的css选择器均可，比如：id、.class等
+				   up : {
+				     height:50,//可选.默认50.触发上拉加载拖动距离
+											auto:false,//可选,默认false.自动上拉加载一次
+											contentrefresh : "正在加载...",//可选，正在加载状态时，上拉加载控件上显示的标题内容
+											contentnomore:'没有更多数据了',//可选，请求完毕若没有更多数据时显示的提醒内容；
+				     callback :pullfresh //必选，刷新函数，根据具体业务来编写，比如通过ajax从服务器获取新数据；
+				   },
+					 down: {
+					       style:'circle',//必选，下拉刷新样式，目前支持原生5+ ‘circle’ 样式
+					       color:'#2BD009', //可选，默认“#2BD009” 下拉刷新控件颜色
+					       height: 50,//可选,默认50px.下拉刷新控件的高度,
+					       auto: false,//可选,默认false.首次加载自动上拉刷新一次
+					       callback :pullfreshDown //必选，刷新函数，根据具体业务来编写，比如通过ajax从服务器获取新数据；
+					     }
+				 },
+				 beforeback: function() {
+					 console.log('离开wait')
+				 　　　　localStorage.setItem('approveStr2', '');
+								localStorage.setItem('beginDate2', '');
+								localStorage.setItem('endDate2', '');
+				         //返回true,继续页面关闭逻辑
+				         return true;
+				     }
+			});
+			var vm = new Vue({
+				el: '#app',
+				data(){
+					return {
+						page: 1,
+						pageSize: 5,
+						approveList: [],
+						endPullupToRefresh: '',
+						approveStr: '',
+						beginDate: '',
+						endDate: '',
+						loginUser: ''
+					}
+				},
+				methods: {
+					pageHandler(pageNum) {
+						this.pageNum = pageNum;
+						   				  $.ajax({
+						   				  					 	url: zfyurl+"/app/api/approvalTask/list/page",
+						   				  					 	data: {
+																			userId: this.loginUser.id,
+																			companyId: this.loginUser.comId,
+																			pageNum: this.pageNum,
+																			pageSize: this.pageSize,
+																			approStatus: 2,
+																			status: this.approveStr,
+																			beginDate: this.beginDate,
+																			endDate: this.endDate
+																		},
+						   				  					 	type:"POST",
+						   				  					 	dataType:'jsonp',
+						   				  					 	success: res=>{
+						   				  					 		if(res.code=="M000000"){
+																				 mui('#refreshContainer').pullRefresh().endPulldownToRefresh(true);
+						   				  					 			if (res.data.length == 0) {
+																					this.approveList = [];
+						   				  					 				$('.mui-pull-caption').text('没有更多数据了');
+																					mui('#refreshContainer').pullRefresh().enablePullupToRefresh();
+						   				  					 				mui('#refreshContainer').pullRefresh().endPullupToRefresh(true);
+						   				  					 			} else if (res.data.length < 5) {
+						   				  					 				let approveList = res.data;
+						   				  					 				this.approveList = approveList;
+																					mui('#refreshContainer').pullRefresh().enablePullupToRefresh();
+						   				  					 				mui('#refreshContainer').pullRefresh().endPullupToRefresh(true);
+						   				  					 				$('.mui-pull-caption').text('没有更多数据了');
+						   				  					 			} else {
+						   				  					 				this.page += 1;
+																					console.log('page'+this.page)
+						   				  					 				let approveList = res.data;
+						   				  					 				this.approveList = approveList;
+						   				  					 				mui('#refreshContainer').pullRefresh().enablePullupToRefresh();
+						   				  					 				mui('#refreshContainer').pullRefresh().endPullupToRefresh(false);
+						   				  					 			}
+						   				  					 		}
+						   				  					 		if(res.code=="E000000"){
+						   				  					 			mui.alert(res.info)
+						   				  					 		}
+						   				  					 	}
+						   				  				})
+					 },
+					 setApproveId(detailId, processId, companyId, curApprove, instId){
+						 console.log(detailId+processId)
+						mui.openWindow({
+													 id: 'approve-detail.html',
+													 url: 'approve-detail.html',
+													 styles: {
+													 	"render": "always",
+													 	"popGesture": "hide",
+													 	"bounce": "vertical",
+													 },
+													 extras: {
+														 detailId: detailId,
+														 processId: processId,
+														 curApprove: curApprove,
+														 instId: instId,
+													 }
+						})
+					 }
+				},
+				created(){
+					console.log('创建')
+					mui.plusReady(function() {
+						vm.loginUser=JSON.parse(localStorage.getItem('loginUser'));
+						localStorage.setItem('approveStr2', '');
+						localStorage.setItem('beginDate2', '');
+						localStorage.setItem('endDate2', '');
+						vm.pageHandler(1);
+					});
+						/* this.loginUser=JSON.parse(localStorage.getItem('loginUser'));
+						this.pageHandler(1);
+						localStorage.setItem('approveStr2', '');
+						localStorage.setItem('beginDate2', '');
+						localStorage.setItem('endDate2', ''); */
+				}
+			})
+			
+			function pullfresh(){
+										$.ajax({
+															 	url: zfyurl+"/app/api/approvalTask/list/page",
+															 	data: {
+																	userId: vm.loginUser.id,
+																	companyId: vm.loginUser.comId,
+																	pageNum: vm.pageNum,
+																	pageSize: vm.pageSize,
+																	approStatus: 2,
+																	status: vm.approveStr,
+																	beginDate: vm.beginDate,
+																	endDate: vm.endDate
+																},
+															 	type:"POST",
+															 	dataType:'jsonp',
+															 	success: res=>{
+						if (res.code == "M000000") {
+													console.log(res.data.length)
+													if (res.data.length == 0) {
+														$('.mui-pull-caption').text('没有更多数据了');
+														mui('#refreshContainer').pullRefresh().endPullupToRefresh(true);
+													} else if (res.data.length < 5) {
+														let approveList = res.data;
+														$.each(approveList, (index, item) => {
+														
+															vm.approveList.push(approveList[index]);
+						
+														})
+														$('.mui-pull-caption').text('没有更多数据了')
+														mui('#refreshContainer').pullRefresh().endPullupToRefresh(true);
+													} else {
+														vm.page += 1;
+														console.log('page'+vm.page)
+														let approveList = res.data;
+														$.each(approveList, (index, item) => {
+															vm.approveList.push(approveList[index]);
+														})
+														mui('#refreshContainer').pullRefresh().endPullupToRefresh(false);
+													}
+						
+												}
+												if (res.code == "E000000") {
+													mui.alert(res.info)
+												}
+															 	}
+														})
+			}
+			
+			function pullfreshDown(){
+				console.log('下拉刷新')
+				vm.pageHandler(1);
+				setTimeout(()=>{
+					mui('#refreshContainer').pullRefresh().endPulldownToRefresh(true);
+				},4000)
+			}
+			
+			$('#shaixuan').bind('tap',()=>{
+				mui.openWindow({
+					id: 'approve-done-set.html',
+					url: 'approve-done-set.html',
+					styles: {
+						"render": "always",
+						"popGesture": "hide",
+						"bounce": "vertical",
+					}
+				})
+			})
+			
+			$('#sousuo').bind('tap',()=>{
+				console.log('搜索')
+				mui.openWindow({
+					id: 'approve-done-search.html',
+					url: 'approve-done-search.html',
+					styles: {
+						"render": "always",
+						"popGesture": "hide",
+						"bounce": "vertical",
+					}
+				})
+			})
+			
+			window.addEventListener('set', function (event) {
+			      var val = event.detail;
+						console.log(JSON.stringify(val));
+						vm.approveStr = val.approveStr;
+						vm.beginDate = val.beginDate;
+						vm.endDate = val.endDate;
+						console.log('阿萨达是')
+						vm.pageHandler(1)
+			 })
+			 
+			 window.addEventListener('refresh', ()=>{
+			 	location.reload();
+			 })
+		</script>
+	</body>
+
+</html>

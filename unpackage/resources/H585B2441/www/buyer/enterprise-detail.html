@@ -1,0 +1,228 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>消息详情</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="../css/reset.css"/>
+		<link rel="stylesheet" type="text/css" href="../css/style.css"/>
+		<link rel="stylesheet" type="text/css" href="../css/common.css"/>
+		<link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css"/>
+		<link href="../css/mui.picker.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="http://at.alicdn.com/t/font_1804860_9d02kit2igr.css" />
+		<style type="text/css">
+			h2{font-size: 20px;color: #333;line-height: 18px;font-weight: bold;}
+			p{font-size: 16px;line-height: 26px;padding-top: 0;color: #494949;}
+			@media only screen and (max-width: 320px) {
+				h2{font-size: 18px;color: #333;line-height: 18px;}
+				p{font-size: 14px;}
+			}
+			
+			body {
+				padding: 5px;
+			}
+			
+			.moren,.message{display: none;}
+			i {
+				padding-top: 13px;
+			}
+			#store2 {
+				color: #ff0000;
+				display: none;
+			}
+			
+			.graduate {
+				top: 20%;
+				left: 20%;
+			}
+			
+			.reset {
+				width: 95%;
+				position: fixed;
+				bottom: 0;
+			}
+			
+			#getcode {
+				width: 18%;
+			}
+			
+			h2 {
+				    border-left: 3px solid #ff7b57;
+				    font-size: 1.375rem;
+				    color: #3b3c42;
+				    padding-left: 10px;
+				    margin-top: 15px;
+				    margin-bottom: 10px;
+			}
+			
+			#touchsupplier {
+				width: 100%;
+				margin-top: 10px;
+				margin-bottom: 10px;
+			}
+		</style>
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav">
+				  <span class="index-left">
+				    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+					</span>
+					<h1 class="mui-title">企业信息</h1>
+		</header>
+
+		<div class="pad-lr-10 pad-top-50" style="position: relative;" id="app">
+			<div class="priseTop">
+				<h2>企业概括</h2>
+				<div>{{detail.companyName}}</div>
+				<div>
+					<span>企业简称</span>
+					<span>{{detail.shortName}}</span>
+				</div>
+				<div v-html="detail.introduction">
+					
+				</div>
+			</div>
+			<div class="comdel">
+				<h2>工商信息</h2>
+				<div>
+					<div>企业名称</div>
+					<span>{{detail.companyName}}</span>
+				</div>
+				<div>
+					<div>统一社会信用代码</div>
+					<span>{{detail.socialCreditCode}}</span>
+				</div>
+				<div>
+					<div>法人代表</div>
+					<span>{{detail.legalPerson}}</span>
+				</div>
+				<div>
+					<div>企业电话</div>
+					<span>{{detail.tel}}</span>
+				</div>
+				<div>
+					<div>企业传真</div>
+					<span>{{detail.fax}}</span>
+				</div>
+				<div>
+					<div>企业邮箱</div>
+					<span>{{detail.comEmail}}</span>
+				</div>
+				<div>
+					<div>企业成立年份</div>
+					<span>{{detail.setupYear}}</span>
+				</div>
+				<div>
+					<div>注册地址</div>
+					<span>{{detail.provinceName}}{{detail.cityName}}{{detail.registerAddress}}</span>
+				</div>
+				<div>
+								<div>主营业务</div>
+								<span>{{detail.mainBusinessName}}</span>
+							</div>
+				<div>
+					<div>营业执照扫描件</div>
+					<span>
+						<img :src="imgurl" />
+					</span>
+				</div>
+				<h2>其他信息</h2>
+				<div>
+					<div>企业分类</div>
+					<span>{{comClassName}}</span>
+				</div>
+				<div>
+					<div>通讯地址</div>
+					<span>{{address}}</span>
+				</div>
+				</div>
+				<h2>联系人信息</h2>
+				<div v-for="(item,index) in contactList" class="comdel">
+					<div>
+						<div>联系人</div>
+						<span>{{item.name}}</span>
+					</div>
+					<div>
+						<div>联系电话</div>
+						<span>{{item.tel}}</span>
+					</div>
+					<div>
+						<div>手机号</div>
+						<span>{{item.phone}}</span>
+					</div>
+					<div>
+						<div>邮箱</div>
+						<span>{{item.email}}</span>
+					</div>
+				</div>
+			
+			<button type="button" id="touchsupplier" class="mui-btn mui-btn-primary">联系供应商</button>
+			
+			
+		</div>
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/jquery-1.7.2.min.js"></script>
+		<script src="../js/all.js"></script>
+		<script src="../js/mui.picker.min.js"></script>
+		<script src="../js/vue.min.js"></script>
+		<script>
+			mui.init();
+			var id = localStorage.getItem('comId');
+			
+			var vm = new Vue({
+				el: '#app',
+				data(){
+					return{
+						detail: '',
+						people: [],
+						tels: [],
+						imgurl: zfyurl+'/admin/api/center/attach/view/',
+						imgurl2: zfyurl+'/admin/api/center/attach/view/',
+						comClassName: '',
+						address: '',
+						contactList: []
+						
+					}
+				},
+				methods: {
+					pageHandler() {
+						   				  $.ajax({
+						   				  					 	url: zfyurl+"/app/api/company/view",
+						   				  					 	data: {
+																			'id': 'fd3a4480e3f241389557efa5c0cf2ff8'
+																		},
+						   				  					 	type:"POST",
+						   				  					 	dataType:'jsonp',
+						   				  					 	success: res=>{
+						   				  					 		if(res.code=="M000000"){
+						   				  					 			console.log(res.data);
+																				this.detail = res.data;
+																				this.imgurl +=res.data.licAttachmentId+'.png';
+																				this.imgurl2 +=res.data.authorizedAttachmentId+'.png';
+																				this.comClassName = res.comClassName;
+																				this.address = res.comProvinceName+res.comCityName+res.data.comAddress;
+																				for(var i in res.contactsList){
+																					this.contactList.push({name: res.contactsList[i].name,tel: res.contactsList[i].tel,phone: res.contactsList[i].phone,email: res.contactsList[i].email})
+																				}
+						   				  					 		}
+						   				  					 		if(res.code=="E000000"){
+						   				  					 			mui.alert(res.info)
+						   				  					 		}
+						   				  					 		
+						   				  					 	}
+						   				  				})
+					 },
+				},
+				created(){
+										 console.log('asd')
+										 this.pageHandler()
+				}
+			})
+			
+		</script>
+	</body>
+
+</html>
+
+

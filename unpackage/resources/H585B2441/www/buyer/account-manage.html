@@ -1,0 +1,104 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>消息详情</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="../css/reset.css"/>
+		<link rel="stylesheet" type="text/css" href="../css/style.css"/>
+		<link rel="stylesheet" type="text/css" href="../css/common.css"/>
+		<link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css"/>
+		<link href="../css/mui.picker.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="http://at.alicdn.com/t/font_1804860_9d02kit2igr.css" />
+		<style type="text/css">
+			h2{font-size: 20px;color: #333;line-height: 18px;font-weight: bold;}
+			p{font-size: 16px;line-height: 26px;padding-top: 15px;color: #494949;}
+			@media only screen and (max-width: 320px) {
+				h2{font-size: 18px;color: #333;line-height: 18px;}
+				p{font-size: 14px;}
+			}
+			
+			.mui-table-view-cell.mui-collapse .mui-collapse-content {
+				background: none;
+			}
+			
+			.mui-table-view {
+				background: none;
+			}
+			
+			.mui-navigate-right {
+				border: #8b9cac 1px solid;
+				border-radius: 5px;
+			}
+			
+			.mui-collapse-content {
+				border: #8b9cac 1px solid;
+				border-radius: 5px;
+			}
+			
+			.mui-input-group {
+				background: none;
+			}
+		</style>
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav">
+				  <span class="index-left">
+				    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+					</span>
+					<h1 class="mui-title">账号管理</h1>
+		</header>
+
+		<div class="pad-lr-10 pad-top-50 service" style="position: relative;">
+			<div>常见问题解答</div>
+			<div>
+				 <ul class="mui-table-view"> 
+				        <li class="mui-table-view-cell mui-collapse">
+				            <a class="mui-navigate-right" href="javascript">修改密码</a>
+				            <div class="mui-collapse-content">
+											<form class="mui-input-group">
+											    <div class="mui-input-row">
+											      <label>姓名：</label>
+														<input type="text" disabled class="mui-input-clear" placeholder="请输入用户名">
+											    </div>
+											    <div class="mui-input-row">
+											        <label>旧密码：</label>
+											        <input type="password" class="mui-input-password" placeholder="请输入密码">
+											    </div>
+													<div class="mui-input-row">
+													    <label>新密码：</label>
+													    <input type="password" class="mui-input-password" placeholder="请输入密码">
+													</div>
+													<div class="mui-input-row">
+													    <label>确认密码：</label>
+													    <input type="password" class="mui-input-password" placeholder="请输入密码">
+													</div>
+											    <div class="mui-button-row">
+											        <button type="button" class="mui-btn mui-btn-primary" >确认</button>
+															<button type="button" class="mui-btn mui-btn-warning">重置</button>
+											        <button type="button" class="mui-btn mui-btn-danger" >取消</button>
+											    </div>
+											</form>
+				            </div>
+				        </li>
+				  </ul>
+			</div>
+			
+			<div style="text-align: center;">切换账号</div>
+			<div style="text-align: center;">退出登录</div>
+		</div>
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/jquery-1.7.2.min.js"></script>
+		<script src="../js/all.js"></script>
+		<script src="../js/bootstrap.min.js"></script>
+		<script src="../js/mui.picker.min.js"></script>
+		<script>
+			mui.init();
+			
+		</script>
+	</body>
+
+</html>
+
+

@@ -1,0 +1,818 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>审批详情</title>
+		<meta name="viewport" content="width=device-width,initia l-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="../css/reset.css"/>
+		<link rel="stylesheet" type="text/css" href="../css/style.css"/>
+		<link rel="stylesheet" type="text/css" href="../css/common.css"/>
+		<link rel="stylesheet" type="text/css" href="../fonts/iconfont.css"/>
+<link rel="stylesheet" type="text/css" href="../../css/mui.poppicker.css"/>
+		<link rel="stylesheet" type="text/css" href="../css/mui.picker.min.css"/>
+		<link rel="stylesheet" href="http://at.alicdn.com/t/font_1804860_9d02kit2igr.css" />
+		<style type="text/css">
+		
+		.font-lighter{font-size: 16px;color: #666;}
+		.mui-icon-arrowright{color: #999;}
+		.mui-scroll-wrapper{top: 20px}
+		/*.mui-pull-top-pocket{top: 20px;}*/
+		.mui-popover {
+			width: 95% !important;
+			top: 40% !important;
+			margin-left: 2.5% !important;
+			position: fixed !important;
+		}
+		
+		h2 {
+			font-size: 1.375rem;
+			color: #3b3c42;
+			margin-top: 15px;
+			margin-bottom: 10px;
+		}
+		
+		table {
+		            text-align: center;
+		            vertical-align: middle;
+		            border-collapse: collapse;
+		            position: relative;
+		            width: 100%;
+		        }
+		
+		        table thead {
+		            height: 35px;
+		            background-color: #f2f2f2;
+		        }
+		
+		        table td {
+		            border: 0;
+		            padding: 15px;
+		            position: relative;
+		        }
+		
+		        table td::after {
+		            content: "";
+		            display: block;
+		            position: absolute;
+		            left: 0%;
+		            top: 0%;
+		            width: 200%;
+		            height: 200%;
+		            border: 1px solid #f2f2f2;
+		            border-top: none;
+		            border-right: none;
+		            transform-origin: 0 0;
+		            transform: scale(0.5);
+		        }
+		
+		        table::after {
+		            content: "";
+		            display: block;
+		            position: absolute;
+		            left: 0%;
+		            top: 0%;
+		            width: 200%;
+		            height: 200%;
+		            border: 1px solid #f2f2f2;
+		            border-left: none;
+		            border-bottom: none;
+		            transform-origin: 0 0;
+		            transform: scale(0.5);
+		        }
+						
+						th {
+							padding: 10px
+						}
+						
+						#process1 {
+							padding-bottom: 10px;
+						}
+						
+						.whitebg {
+							padding: 16px;
+						}
+						
+						.pad-top-50 {
+							padding-top: 0 !important;
+						}
+		</style>
+	</head>
+	<body>
+		<div id="app">
+		<header class="mui-bar mui-bar-nav">
+				  <span class="index-left">
+				    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+					</span>
+					<h1 class="mui-title">审批详情</h1>
+		</header>
+		
+		<!--列表部分 start-->
+		<div class="pad-top-74 pad-bot-80 approveDetail">
+			<div class="whitebg">
+				<div class="busDetailTitle">审批内容</div>
+			<!-- 	<div class="fz14" id="nodeName"></div> -->
+				<div class="" id="content">
+								</div>
+							</div>
+			
+			<!-- 同意弹窗 -->
+			<div id="popover" class="mui-popover agreePop">
+				<div class="approvePop">
+					<div class="flexbetween">
+						<div class="appPopTitle">审批意见-同意</div>
+						<img src="../images/close.png" style="width: 14pt; height: 14pt;" id="closePop" />
+					</div>
+					<div class="approvePopItem">
+						<div>审批意见</div>
+						<textarea id="approveContent"></textarea>
+					</div>
+					<div id="nextUser">
+						下级审批人，当前为最后一级审批人，无下一级审批。
+					</div>
+					
+				</div>
+				<div style="text-align: right;padding:0 5px 5px 0;">
+					<button type="button" id="cancel" class="mui-btn mui-btn-primary mui-btn-outlined">取消</button>
+					<button type="button" id="yes" class="mui-btn mui-btn-primary">确定</button>
+				</div>
+			</div>
+			
+			<!-- 拒绝弹窗 -->
+			<div id="popover" class="mui-popover disagreePop">
+				<div class="approvePop">
+					<div class="flexbetween">
+						<div class="appPopTitle">审批意见-不同意</div>
+						<img src="../images/close.png" style="width: 14pt; height: 14pt;" id="closePop2" />
+					</div>
+					<div class="approvePopItem" id="approveDiv" style="display: none;">
+						<div>下一步操作</div>
+						<select class="mui-select" name="type" id="subType">
+							<option>请选择</option>
+							<option value="0">退回给申请人</option>
+							<option value="1">继续</option>
+						</select>
+					</div>
+					<div class="approvePopItem">
+						<div>审批意见</div>
+						<textarea id="approveContent2"></textarea>
+					</div>
+					<div id="nextUser2">
+						下级审批人，当前为最后一级审批人，无下一级审批。
+					</div>
+					
+				</div>
+				<div style="text-align: right;padding:0 5px 5px 0;">
+					<button type="button" id="cancel2" class="mui-btn mui-btn-primary mui-btn-outlined">取消</button>
+					<button type="button" id="yes2" class="mui-btn mui-btn-primary">确定</button>
+				</div>
+			</div>
+			
+			<!-- 转发弹窗 -->
+			<div id="popover" class="mui-popover sendPop">
+				<div class="approvePop">
+					<div class="flexbetween">
+						<div class="appPopTitle">转发</div>
+						<img src="../images/close.png" style="width: 14pt; height: 14pt;" id="closePop3" />
+					</div>
+					
+					<div class="approvePopItem">
+						<div>审批意见</div>
+						<textarea id="approveContent3"></textarea>
+					</div>
+					
+				</div>
+				<div style="text-align: right;padding:0 5px 5px 0;">
+					<button type="button" id="cancel3" class="mui-btn mui-btn-primary mui-btn-outlined">取消</button>
+					<button type="button" id="yes3" class="mui-btn mui-btn-primary">确定</button>
+				</div>
+			</div>
+			<div class="whitebg">
+				<div class="busDetailTitle">审批进度</div>
+				<div class="appBlock">
+					<div class="appLeft">
+						<div><img src="../images/approve-people.png" /></div>
+						<span>发起人</span>
+					</div>
+					<div class="appRight">
+						<div class="comdel">
+							<div>
+								<div>发起人</div>
+								<span id="firstUser"></span>
+							</div>
+							<div>
+								<div>所属组织</div>
+								<span id="orgName"></span>
+							</div>
+							<div>
+								<div>发起时间</div>
+								<span id="firstTime"></span>
+							</div>
+							<div>
+								<div>停留时间</div>
+								<span id="stopTime"></span>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div id = "process1"></div>
+				
+				
+			</div>
+		</div>
+		<div class="approveBottomWait">
+			<div class="realapproveAgree"  id="agree" style="display: none;" >同意</div>
+			<div class="realapproveDisagree" id="disagree" style="display: none;">不同意</div>
+			<div class="realapproveAgree" id="sendfor" style="display: none;">转发</div>
+		</div>
+		</div>
+		<!--合同列表部分 end-->
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/jquery-1.7.2.min.js"></script>
+		<script src="../js/all.js"></script>
+		<script src="../js/mui.picker.min.js"></script>
+		<script src="../js/mui.poppicker.js"></script>
+		<script src="../js/city.data-3.js"></script>
+		<script src="../js/vue.min.js"></script>
+		<script>
+			mui.init({
+				gestureConfig: {
+				        longtap: true, //默认为false
+								longtap: true
+				      },
+				beforeback: function() {
+								//获得父页面的webview
+								var ws = plus.webview.currentWebview().opener();
+				　　　　 //触发父页面的自定义事件(refresh),从而进行刷新
+								mui.fire(ws, 'refresh');
+				         //返回true,继续页面关闭逻辑
+				         return true;
+				     }
+			});
+
+			var approveTemp = "";
+			var approveTemp2 = "";
+			var cur;
+			var instId = "";
+			var detailId = "";
+			var curApprove = "";
+			var processId = "";
+			var companyId = "";
+
+			mui.plusReady(function () {
+			    var val = plus.webview.currentWebview();
+					
+					instId = val.instId;
+					detailId = val.detailId;
+					curApprove = val.curApprove;
+					processId = val.processId;
+					
+					/* instId = "wkInst8776";
+					detailId = "wkTask8881";
+					curApprove = "260c363f7b21437484f742cadbb5e0fb,";
+					processId = "wkProcess211"; */
+					
+					console.log(instId+'instId');
+					console.log(curApprove+'curApprove');
+					console.log(detailId+'detailId');
+					console.log(processId+'processId');
+					initCtrl();
+					initTable();
+					function initCtrl(){
+							console.log('CRIAS')
+						var url=zfyurl+"/app/api/mineApprioval/list/detail?id="+instId;
+						 $.ajax({
+							type:"post",
+							url:url,
+							async : false,
+							dataType:"jsonp",
+							success:function(res){
+							var content = res.data.appApplication;
+							var userName = res.data.userName;
+							var createDatetime = res.data.createDatetime;
+							var stau = res.data.approveStatus;
+							var stopTime = res.data.stopTime;
+							var orgName = res.data.orgName;
+							if(stau == "1"){
+								$("#appStatus").text("未审批");
+							}else if(stau == "2"){
+								$("#appStatus").text("审批中");
+							}else if(stau == "3"){
+								$("#appStatus").text("已通过");
+							}else if(stau == "4"){
+								$("#appStatus").text("未通过");
+							}
+							$("#content").html(content);
+							$("#firstUser").text(userName);
+							$("#firstTime").text(createDatetime);
+							$("#stopTime").text(stopTime);
+							$("#orgName").text(orgName);
+							$('#nodeName').text(localStorage.getItem('nodeName'));
+							
+							$.each($('span img'), (index, item)=>{
+								let src = $(item).attr('src');
+								$(item).attr('src', zfyurl+src)
+							})
+						},
+						});
+						
+						$("#agree").click(function(){
+							getNextUser(instId);
+							 function getNextUser(instId){
+							  var url = zfyurl+"/app/api/mineApprioval/nextApproveUser?instId="+instId;			
+								$.ajax({
+									type:"post",
+									url:url,
+									async : false,
+									dataType:"jsonp",
+									success:function(res){
+										if(res.code == "M000000"){
+										 var xxx = res.info;
+										 if(xxx == "999999"){
+										  $("#nextUser").html("当前为最后一级审批人，无下一级审批人");
+										 }else{
+										  $("#nextUser").html(xxx);
+										 }
+										}else{
+										 mui.alert(res.info);
+										}
+									}
+									})			
+							    }
+							mui('.agreePop').popover('toggle');
+							
+					  	});
+						
+						$("#disagree").click(function(){
+							getNextUser2(instId);
+							   
+							 function getNextUser2(instId){
+							  var url = zfyurl+"/app/api/mineApprioval/nextApproveUser?instId="+instId;			
+								$.ajax({
+									type:"post",
+									url:url,
+									async : false,
+									dataType:"jsonp",
+									success:function(res){
+										if(res.code == "M000000"){
+										 var xxx = res.info;
+										 if(xxx == "999999"){
+										  approveTemp = xxx;
+										  $("#nextUser2").html("当前为最后一级审批人，无下一级审批人");
+										 }else{
+										  $("#nextUser2").html(xxx);
+										  //如果当前层级审批人存在多个的时候    下一步操作需隐藏起来
+										 }
+										 var arr = curApprove.split(",");
+										 if(arr.length > 0){
+										  var newArr = [];
+										  for(var i = 0; i < arr.length; i++){
+										   if(arr[i] != null && arr[i] != ""){
+										    newArr.push(arr[i]);
+										   }
+										  }
+										  if(newArr.length < 2){
+										   $("#approveDiv").show();
+										  }
+										 }
+										}else{
+										 mui.alert(res.info);
+										}
+									}
+									})			
+							    }
+							mui('.disagreePop').popover('toggle');
+							
+							});
+						
+						$("#sendfor").click(function(){
+							getNextUser3(instId);
+							 function getNextUser3(instId){
+							  var url = zfyurl+"/app/api/mineApprioval/nextApproveUser?instId="+instId;			
+								$.ajax({
+									type:"post",
+									url:url,
+									async : false,
+									dataType:"jsonp",
+									success:function(res){
+										if(res.code == "M000000"){
+										 var xxx = res.info;
+										    if(xxx == "999999"){
+										     approveTemp2 = xxx;
+										    }
+										}else{
+										 mui.alert(res.info);
+										}
+									}
+									})			
+							    }
+							mui('.sendPop').popover('toggle');
+							
+							});
+						
+						
+						$("#yes2").click(function(){
+							let url = zfyurl+"/app/api/approvalTask/disagree";
+							var subType = $("#subType").val();
+							     if(subType == 1 && approveTemp == "999999"){
+							      mui.alert("当前为最后一级审批人，无法继续");
+							      return false;
+							     }
+							$.ajax({
+								type:"post",
+								url:url,
+								data: {
+									taskId: detailId,
+									status: 2,
+									id: detailId,
+									applyId: instId,
+									type: $("#subType").val(),
+									approveContent: $("#approveContent2").val(),
+								},
+								async : false,
+								dataType:"jsonp",
+								success:function(res){
+									if(res.code == "M000000"){
+									 mui('.agreePop').popover('toggle');
+									 location.reload();
+									}else{
+									 mui.alert(res.info);
+									}
+								}
+								})
+						})
+						
+						
+						$("#yes").click(function(){
+							let url = zfyurl+"/app/api/approvalTask/agree";
+							$.ajax({
+								type:"post",
+								url:url,
+								data: {
+									id: detailId,
+									applyId: instId,
+									status: 1,
+									approveContent: $("#approveContent").val()
+								},
+								async : false,
+								dataType:"jsonp",
+								success:function(res){
+									if(res.code == "M000000"){
+									 mui('.agreePop').popover('toggle');
+									 location.reload()
+									}else{
+									 mui.alert(res.info);
+									}
+								}
+								})
+						})
+						
+						$("#yes3").click(function(){
+							let url = zfyurl+"/app/api/approvalTask/approvalForward";
+							if(approveTemp2 == "999999"){
+							      mui.alert("当前为最后一级审批人，无法转发");
+							      return false;
+							     }
+							$.ajax({
+								type:"post",
+								url:url,
+								data: {
+									id: detailId,
+									applyId: instId,
+									status: 3,
+									approveContent: $("#approveContent3").val()
+								},
+								async : false,
+								dataType:"jsonp",
+								success:function(res){
+									if(res.code == "M000000"){
+									 mui('.agreePop').popover('toggle');
+									 location.reload()
+									}else{
+									 mui.alert(res.info);
+									}
+								}
+								})
+						})
+						
+						
+						
+						$("#closePop").click(function(){
+									 mui('.agreePop').popover('toggle');
+						})
+						
+						$("#closePop2").click(function(){
+									 mui('.disagreePop').popover('toggle');
+						})
+						
+						$("#closePop3").click(function(){
+									 mui('.sendPop').popover('toggle');
+						})
+						
+						$("#cancel").click(function(){
+									 mui('.agreePop').popover('toggle');
+						})
+						
+						$("#cancel2").click(function(){
+									 mui('.disagreePop').popover('toggle');
+						})
+						
+						$("#cancel3").click(function(){
+									 mui('.sendPop').popover('toggle');
+						})
+						
+						$("#disagree").click(function(){
+							disagree(detailId,instId,curApprove);
+						});
+						$("#sendfor").click(function(){
+							sendfor(detailId,instId,curApprove);
+						});
+						
+						 $.ajax({
+							type:"post",
+							url:zfyurl+"/app/api/approvalTask/view",
+							async : false,
+							data :{id:detailId},
+							dataType:"jsonp",
+							success:function(res){
+							if(res.code == "M000000"){
+								var data = res.data;
+								if(data != null){
+									var status = data.status;
+									if(status == "0"){
+										$("#agree").show();
+										$("#disagree").show();
+									}else{
+										$('.approveBottomWait').hide()
+									}
+									//转发功能按钮必须是当前层级为一个人的时候才出现
+									var arr = curApprove.split(",");
+									if(arr.length > 0){
+										var newArr = [];
+										for(var i = 0; i < arr.length; i++){
+											if(arr[i] != null && arr[i] != "" && typeof(arr[i]) != "undefined"){
+												newArr.push(arr[i]);
+											}
+										}
+										if(newArr.length == 1 && status == "0"){
+											$("#sendfor").show();
+										}
+									}
+								}
+							}
+						},
+						});
+						
+					}
+					
+						
+						 
+						 
+					  function initTable(){
+							var companyId = JSON.parse(localStorage.getItem('loginUser')).comId;
+							console.log(companyId)
+					  	//得到有多少级审批
+						$.ajax({
+							type:"post",
+							url:zfyurl+"/app/api/processSetting/listDetail",
+							async : false,
+							dataType:"jsonp",
+							data:{id : processId,wkInstId : instId, companyId: companyId},
+							success:function(res2){
+							
+							if(res2.code == "M000000"){
+								var data = res2.data;
+								console.log(JSON.stringify(data))
+								if(data != null && data.length > 0){
+									$.ajax({
+										type:"GET",
+										url: zfyurl+"/app/api/mineApprioval/schedule?id="+instId,
+										async : false,
+										dataType:"jsonp",
+										success:function(res){
+											if(res.code == "M000000"){
+												var data1 = res.data;
+												if(data1 != null){
+													var arr = [];
+													var level = "1";
+													for(var j = 0; j < data.length; j++){
+														for(var k = 0;k < data1.length;k++){
+															var task = data1[k];
+															if(task != null){
+																var taskId = task.taskId;//审批人
+																if(taskId == data[j].uid){
+																	//先确定有多少层级
+																	if(level == data[j].level){
+																		if($.inArray(level,arr) < 0){
+																			arr.push(level);
+																			break;
+																		}
+																	}else{
+																		level = data[j].level;
+																		j--;
+																		break;
+																	}
+																}
+															}
+														}
+													}
+													if(arr.length > 0){
+														var px = (arr.length * 150) + 200;
+														$(".line").css("height",px+"px");
+														
+														for(var i = 0; i < arr.length; i++){
+															var str1 = "";
+															str1 += '<div class="appBlock">';
+															str1 += '<div class="appLeft"><div><img src="../images/approve-people.png" /></div>';
+															str1 += '<span>'+(i+1)+'级审批</span></div>';
+															str1 += '<div class="appRight" id="xxx'+i+'">';
+															 str1 += '</div>'; 
+															
+															$("#process1").append(str1);
+															var str = "";
+															var isHave = [];
+															var f = false;
+															var uid = "";
+															for(var j = 0; j < data.length; j++){
+																if(data[j].uid != null && data[j].uid != ""){
+																	if($.inArray(data[j].uid,isHave) >= 0){
+																		f = true;
+																		uid = data[j].uid;
+																		break;
+																	}else{
+																		isHave.push(data[j].uid);
+																	}
+																}
+															}
+															if(f){
+																//某层里面存在相同的审批人员
+																var ff = false;
+																for(var j = 0; j < data.length; j++){
+																	if(arr[i] == data[j].level){
+																		if(uid != null && uid != "" && uid == data[j].uid){
+																			if(!ff){
+																				for(var k = 0;k < data1.length;k++){
+																					var task = data1[k];
+																					if(task != null){
+																						var taskId = task.taskId;//审批人
+																						var stopTime = task.stopTime;//停留时间
+																						var appTime = task.updateDatetime;//审批时间
+																						var status = task.status;
+																						var statusTxt = "未审批";
+																						var color = "black";
+																						if(status == "1"){
+																							statusTxt = "已通过";
+																							color = "green";
+																						}else if(status == "2"){
+																							statusTxt = "未通过";
+																							color = "red";
+																						}else if(status == "3"){
+																							statusTxt = "已转发";
+																							color = "orange";
+																						}
+																						var taskName = task.taskName;
+																						var approveContent = task.approveContent;//审批意见
+																						if(approveContent == null || approveContent == ""){
+																							approveContent = "无";
+																						}
+																						var attachment = task.attachment;//审批附件
+																						var aContent = "";
+																						if(attachment != null && attachment != ""){
+																							aContent += '<a href="javascript:void(0)" onclick="downFile2('+k+')" >下载附件</a>';
+																							aContent += '<input type="hidden" id="attach'+k+'" value='+attachment+'>';
+																						}else{
+																							aContent += '无';
+																						}
+																						if(taskId == data[j].uid){
+																							ff = true;
+																							str += '<div class="comdel"><div><div>审批人</div>';
+																							str += '<span class="bluecolor">'+taskName+'</span></div>';
+																							str += '<div><div>所属组织</div><span>'+task.orgName+'</span></div>';
+																							str += '<div><div>停留时间</div><span>'+stopTime+'</span></div>';
+																							str += '<div><div>审批时间</div><span>'+appTime+'</span></div>';
+																							str += '<div><div>审批结果</div><span style="color:'+color+'">'+statusTxt+'</span></div>';
+																							str += '<div><div>审批意见</div><span class="greencolor">'+approveContent+'</span></div></div>';
+																							continue;
+																						}
+																					}
+																				}
+																			}
+																		}else{
+																			for(var k = 0;k < data1.length;k++){
+																				var task = data1[k];
+																				if(task != null){
+																					var taskId = task.taskId;//审批人
+																					var stopTime = task.stopTime;//停留时间
+																					var appTime = task.updateDatetime;//审批时间
+																					var status = task.status;
+																					var statusTxt = "未审批";
+																					var color = "black";
+																					if(status == "1"){
+																						statusTxt = "已通过";
+																						color = "green";
+																					}else if(status == "2"){
+																						statusTxt = "未通过";
+																						color = "red";
+																					}else if(status == "3"){
+																						statusTxt = "已转发";
+																						color = "orange";
+																					}
+																					var taskName = task.taskName;
+																					var approveContent = task.approveContent;//审批意见
+																					if(approveContent == null || approveContent == ""){
+																						approveContent = "无";
+																					}
+																					var attachment = task.attachment;//审批附件
+																					var aContent = "";
+																					if(attachment != null && attachment != ""){
+																						aContent += '<a href="javascript:void(0)" onclick="downFile2('+k+')" >下载附件</a>';
+																						aContent += '<input type="hidden" id="attach'+k+'" value='+attachment+'>';
+																					}else{
+																						aContent += '无';
+																					}
+																					if(taskId == data[j].uid){
+																						str += '<div class="comdel"><div><div>审批人</div>';
+																						str += '<span class="bluecolor">'+taskName+'</span></div>';
+																						str += '<div><div>所属组织</div><span>'+task.orgName+'</span></div>';
+																						str += '<div><div>停留时间</div><span>'+stopTime+'</span></div>';
+																						str += '<div><div>审批时间</div><span>'+appTime+'</span></div>';
+																						str += '<div><div>审批结果</div><span style="color:'+color+'">'+statusTxt+'</span></div>';
+																						str += '<div><div>审批意见</div><span class="greencolor">'+approveContent+'</span></div></div>';
+																						continue;
+																					}
+																				}
+																			}
+																		}
+																	}
+																}
+															}else{
+																//不存在
+																for(var j = 0; j < data.length; j++){
+																	if(arr[i] == data[j].level){
+																		for(var k = 0;k < data1.length;k++){
+																			var task = data1[k];
+																			if(task != null){
+																				var taskId = task.taskId;//审批人
+																				var stopTime = task.stopTime;//停留时间
+																				var appTime = task.updateDatetime;//审批时间
+																				var status = task.status;
+																				var statusTxt = "未审批";
+																				var color = "black";
+																				if(status == "1"){
+																					statusTxt = "已通过";
+																					color = "green";
+																				}else if(status == "2"){
+																					statusTxt = "未通过";
+																					color = "red";
+																				}else if(status == "3"){
+																					statusTxt = "已转发";
+																					color = "orange";
+																				}
+																				var taskName = task.taskName;
+																				var approveContent = task.approveContent;//审批意见
+																				if(approveContent == null || approveContent == ""){
+																					approveContent = "无";
+																				}
+																				var attachment = task.attachment;//审批附件
+																				var aContent = "";
+																				if(attachment != null && attachment != ""){
+																					aContent += '<a href="javascript:void(0)" onclick="downFile2('+k+')" >下载附件</a>';
+																					aContent += '<input type="hidden" id="attach'+k+'" value='+attachment+'>';
+																				}else{
+																					aContent += '无';
+																				}
+																				if(taskId == data[j].uid){
+																					str += '<div class="comdel"><div><div>审批人</div>';
+																					str += '<span class="bluecolor">'+taskName+'</span></div>';
+																					str += '<div><div>所属组织</div><span>'+task.orgName+'</span></div>';
+																					str += '<div><div>停留时间</div><span>'+stopTime+'</span></div>';
+																					str += '<div><div>审批时间</div><span>'+appTime+'</span></div>';
+																					str += '<div><div>审批结果</div><span style="color:'+color+'">'+statusTxt+'</span></div>';
+																					str += '<div><div>审批意见</div><span class="greencolor">'+approveContent+'</span></div></div>';
+																					continue;
+																				}
+																			}
+																		}
+																	}
+																}
+															}
+															$("#xxx"+i).append(str);
+														}
+													}
+												}
+											}
+										}
+									});
+								}
+							}
+						}});
+					}
+			})
+	
+    
+    
+		
+		</script>
+	</body>
+
+</html>

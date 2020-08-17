@@ -1,0 +1,272 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>需我审批待审批</title>
+		<meta name="viewport" content="width=device-width,initia l-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="../css/reset.css" />
+		<link rel="stylesheet" type="text/css" href="../css/style.css" />
+		<link rel="stylesheet" type="text/css" href="../css/common.css" />
+		<link rel="stylesheet" type="text/css" href="../fonts/iconfont.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/mui.poppicker.css" />
+		<link rel="stylesheet" type="text/css" href="../css/mui.picker.min.css" />
+		<link rel="stylesheet" href="http://at.alicdn.com/t/font_1804860_9d02kit2igr.css" />
+		<style type="text/css">
+			.font-lighter {
+				font-size: 16px;
+				color: #666;
+			}
+
+			.mui-icon-arrowright {
+				color: #999;
+			}
+
+			.mui-scroll-wrapper {
+				top: 20px
+			}
+			
+			[data-id=picker-h] {
+				display: none;
+			}
+			
+			[data-id=title-h] {
+				display: none !important;
+			}
+			
+			
+			[data-id=picker-i] {
+				display: none;
+			}
+			
+			[data-id=title-i] {
+				display: none !important;
+			}
+			
+			[data-id=picker-y] {
+				width: 33.3333333% !important;
+			}
+			
+			[data-id=title-y] {
+				width: 33.3333333% !important;
+			}
+			
+			[data-id=picker-m] {
+				width: 33.3333333% !important;
+			}
+			
+			[data-id=title-m] {
+				width: 33.3333333% !important;
+			}
+			
+			[data-id=picker-d] {
+				width: 33.3333333% !important;
+			}
+			
+			[data-id=title-d] {
+				width: 33.3333333% !important;
+			}
+			/*.mui-pull-top-pocket{top: 20px;}*/
+		</style>
+	</head>
+	<body>
+		<div id="app">
+			<header class="mui-bar mui-bar-nav">
+				<span class="index-left">
+					<a class="mui-action-back mui-icon mui-icon-closeempty"></a>
+				</span>
+				<h1 class="mui-title">审批筛选</h1>
+			</header>
+
+			<div class="pad-top-64 sxactive" id="app">
+				<div class="approve-sx approve-sx-state">
+					<div class="busDetailTitle">推送类型</div>
+					<div class="buttonWrap approveWrap">
+						<button type="button" id="approveAll" @tap="setApproveActiveAll('approveAll',0)" class="mui-btn mui-btn-primary mui-btn-outlined">全部</button>
+						<button type="button" id="approve3" @tap="setApproveActive('approve3',3)" class="mui-btn mui-btn-primary mui-btn-outlined">同意</button>
+						<button type="button" id="approve4" @tap="setApproveActive('approve4',4)" class="mui-btn mui-btn-primary mui-btn-outlined">不同意</button>
+					</div>
+				</div>
+				<div class="approve-sx approve-sx-time">
+					<div class="busDetailTitle">时间范围</div>
+					<div>
+						<button type="button" id="timeStart" class="mui-btn mui-btn-primary mui-btn-outlined"><span v-if="beginDate==''||beginDate==null||typeof(beginDate)=='undefined'">开始时间</span>{{beginDate}}</button>
+						<button type="button" id="timeEnd" class="mui-btn mui-btn-primary mui-btn-outlined"><span v-if="endDate==''||endDate==null||typeof(endDate)=='undefined'">结束时间</span>{{endDate}}</button>
+					</div>
+				</div>
+
+
+			</div>
+			<div class="approveBottomWait">
+				<div class="fixedWhiteBlue" @tap="reset">重置</div>
+				<div class="approveAgree" id="confirm" @tap="confirm">确定</div>
+			</div>
+		</div>
+		<!--合同列表部分 end-->
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/jquery-1.7.2.min.js"></script>
+		<script src="../js/all.js"></script>
+		<script src="../js/mui.picker.min.js"></script>
+		<script src="../js/mui.poppicker.js"></script>
+		<script src="../js/city.data-3.js"></script>
+		<script src="../js/vue.min.js"></script>
+		<script>
+			mui.init({
+				gestureConfig: {
+					tap: true, //默认为false
+					longtap: true
+				},
+			});
+			
+			Array.prototype.indexOf = function(val) { 
+			for (var i = 0; i < this.length; i++) { 
+			if (this[i] == val) return i;
+			} 
+			return -1; 
+			};
+			Array.prototype.remove = function(val) {
+				console.log(val);
+				var index = this.indexOf(val);
+				if (index > -1) {
+					this.splice(index, 1);
+				}
+			};
+			function isNull(value) {
+			        if (!value && typeof value != "undefined" && value != 0) {
+			            return true;
+			        } else {
+			            return false;
+			        }
+			    }
+			
+			var vm = new Vue({
+				el: '#app',
+				data() {
+					return {
+						loginUser: '',
+						approveList: [],
+						approveStr: '',
+						beginDate: '',
+						endDate: ''
+					}
+				},
+				watch: {
+					'approveList': function() {
+						if(this.approveList.length==2){
+							$('#approveAll').addClass('active');
+							this.approveList = [0];
+						}
+					}
+				},
+				methods: {
+					setApproveActive(elem, ids) {
+						let el = "#" + elem;
+						let id = ids;
+						if ($(el).attr('class').indexOf('active') == -1) {
+							$(el).addClass('active');
+							this.approveList.push(id);
+							console.log(this.approveList);
+						} else {
+							if ($('#approveAll').attr('class').indexOf('active') != -1) {
+								$("#approveAll").removeClass('active');
+								this.approveList = [3, 4];
+							}
+							$(el).removeClass('active');
+							this.approveList.remove(id);
+							console.log(this.approveList);
+						}
+					},
+					setApproveActiveAll(elem, ids) {
+						let el = "#" + elem;
+						let id = ids;
+						if ($(el).attr('class').indexOf('active') == -1) {
+							$('.approveWrap button').addClass('active');
+							this.approveList = [0];
+							console.log(this.approveList);
+						} else {
+							$('.approveWrap button').removeClass('active');
+							this.approveList = [];
+							console.log(this.approveList);
+						}
+					},
+					getApproveSet(){
+									this.approveStr = localStorage.getItem('approveStr4');
+									this.beginDate = localStorage.getItem('beginDate4');
+									this.endDate = localStorage.getItem('endDate4');
+									
+								console.log(this.beginDate)
+								if(this.approveStr.length!=0){
+									this.approveList = this.approveStr.split(',');
+								}else{
+									this.approveList = []
+								}
+								console.log(this.approveList)
+								for(let i = 0; i<this.approveList.length; i++){
+									if(this.approveList[i]==0){
+										$('.approveWrap button').addClass('active');
+									}else{
+										$(`#approve${this.approveList[i]}`).addClass('active');
+									}
+									
+								}
+					},
+					confirm() {
+						this.approveStr = this.approveList.toString();
+						console.log(this.approveStr);
+						console.log(this.beginDate, this.endDate);
+						localStorage.setItem('approveStr4', this.approveStr);
+						localStorage.setItem('beginDate4', this.beginDate);
+						localStorage.setItem('endDate4', this.endDate);
+						statis('1', `approve-from-done-set.html`, `筛选了由我发起的审批`)
+						mui.plusReady(function() {
+							var ws = plus.webview.currentWebview().opener();
+							　　　　 //触发父页面的自定义事件(refresh),从而进行刷新
+							mui.fire(ws, 'set' ,{
+								'approveStr': vm.approveStr,
+								'beginDate': vm.beginDate,
+								'endDate': vm.endDate
+							});
+							mui.back()
+						})
+					},
+					reset(){
+						this.approveList = [];
+						this.beginDate = '';
+						this.endDate = '';
+						$('.approveWrap button').removeClass('active');
+					}
+				},
+				created() {
+					statis('1', `approve-from-done-set.html`, `进入由我发起的审批筛选页面`)
+					this.loginUser = JSON.parse(localStorage.getItem('loginUser'));
+					this.getApproveSet();
+				}
+			})
+
+
+			
+
+			var dtPicker = new mui.DtPicker({
+				type: 'datetime'
+			});
+			var timeStart = document.getElementById('timeStart');
+			timeStart.addEventListener("tap", function() {
+				dtPicker.show(function(selectItems) {
+					console.log('开始时间', selectItems.h.text);
+					/* vm.beginDate = `${selectItems.y.value}-${selectItems.m.value}-${selectItems.d.value} ${selectItems.h.value}:${selectItems.m.value}:00`; */
+						 vm.beginDate = `${selectItems.y.value}-${selectItems.m.value}-${selectItems.d.value}`;
+				})
+			})
+
+			var timeEnd = document.getElementById('timeEnd');
+			timeEnd.addEventListener("tap", function() {
+				dtPicker.show(function(selectItems) {
+					console.log('截止时间', selectItems.h.text);
+					/* vm.endDate = `${selectItems.y.value}-${selectItems.m.value}-${selectItems.d.value} ${selectItems.h.value}:${selectItems.m.value}:00`; */
+					vm.endDate = `${selectItems.y.value}-${selectItems.m.value}-${selectItems.d.value}`;
+				})
+			})
+		</script>
+	</body>
+
+</html>

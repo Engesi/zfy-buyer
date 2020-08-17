@@ -1,0 +1,202 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>工作台</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="../css/reset.css" />
+		<link rel="stylesheet" type="text/css" href="../css/style.css" />
+		<link rel="stylesheet" type="text/css" href="../css/common.css"/>
+		<link rel="stylesheet" type="text/css" href="../fonts/iconfont.css"/>
+		<style type="text/css">
+			.title .line{background: #ff8555;}
+			#name {
+				margin-bottom: 10px;
+			}
+			
+			#head {
+				width: 20%;
+			}
+			
+			#head img {
+				width: 100%;
+				height: 100%;
+			}
+			
+			.headright {
+				width: 60%;
+				font-size: 22px;
+				margin-top: 7%;
+			}
+			
+			.mui-navigate-right {
+				    border: #8b9cac 1px solid;
+				    border-radius: 5px;
+			}
+			
+			a {
+				display: block;
+				width: 100%;
+			}
+		</style>
+	</head>
+
+	<body>
+	
+		<div class="home">
+				<div class="hometop">
+					<div id="head">
+						<img src="../images/shangji-jinrishangji.png" class="fl" />
+					</div>
+					<div class="headright">
+						<div id="name">康泽壮</div>
+						<div id="company">山西有限公司</div>
+					</div>
+				</div>
+				<div><a href="personal-data.html" withtitle="false">个人资料</a></div>
+				<div><a href="company-detail.html" withtitle="false">企业信息</a></div>
+				<div><a href="customer-service.html" withtitle="false">客服中心</a></div>
+				<div><a href="../page/help-center.html" withtitle="false">帮助中心</a></div>
+				<div><a href="account-manage.html" withtitle="false">账号管理</a></div>
+				<div><a href="approve-wait.html" withtitle="false">等待审批</a></div>
+				<!-- <div>常用地址管理</div> -->
+		</div>
+		<!--工作台模块部分 end-->
+		<!--退出按钮 start-->
+		<!--<div class="pad-lr-45 pad-tb-20">
+			<button type="button" class="corner-btn theme-bg-supplier" id="sign_out">退出登陆</button>
+		</div>-->
+		<!--退出按钮 end-->
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/jquery-1.7.2.min.js"></script>
+		<script src="../js/all.js"></script>
+		<script>
+			mui.init();
+			document.getElementById('head').addEventListener('tap', function() { 
+			    if(mui.os.plus) { 
+			        var a = [{ 
+			            title: "拍照" 
+			    }, { 
+			        title: "从手机相册选择" 
+			    }]; 
+			    plus.nativeUI.actionSheet({ 
+			        title: "修改用户头像", 
+			        cancel: "取消", 
+			        buttons: a 
+			    }, function(b) { /*actionSheet 按钮点击事件*/ 
+			        switch(b.index) { 
+			        case 0: 
+			            break; 
+			        case 1: 
+			            getImage(); /*拍照*/ 
+			            break; 
+			        case 2: 
+			            galleryImg(); /*打开相册*/ 
+			            break; 
+			        default: 
+			            break; 
+			        } 
+			    }) 
+			    } 
+			}, false);
+			
+			function galleryImg(){
+				console.log("从相册中选择图片:");
+				    plus.gallery.pick( function(path){
+				    	console.log(`${path}相册选择照片的路径`);
+							$("#head").html('<img src="'+path+'">');
+							uploadHead(path)
+				    }, function ( e ) {
+				    	console.log( "取消选择图片" );
+				    }, {filter:"image"} );
+			}
+			
+			function CompressImage(path){
+			    plus.zip.compressImage( {
+			        src:path,
+			        dst:path,
+			        overwrite:true,
+			        quality:60,
+			    }, function(event){
+			        var _src=event.target;
+			        mui.confirm("是否保存该图片","温馨提示",["否","是"],function(e){
+			            console.log(`${_src}压缩后的路径`)
+			            if(e.index){
+			                plus.gallery.save(_src, function(evt){
+												console.log(`${evt.file}保存到本地的路径`)
+			                    $("#head").html('<img src="'+evt.file+'">');
+													uploadHead(evt.file)
+			                    
+			                }, function(err){
+			                    mui.alert('保存失败: '+JSON.stringify(err));
+			                    
+			                });
+			            }
+			        })
+			
+			        console.log(event.size)
+			    }, function(err){
+			        
+			    });
+			}
+			
+			function uploadHead(imgPath) { 
+			    var image = new Image(); 
+			    image.src = imgPath; 
+			    image.onload = function() { 
+			    var imgData = getBase64Image(image); 
+			    console.log(imgData); 
+			    /*在这里调用上传接口*/ 
+			    //mui.ajax("图片上传接口", { 
+			        //data: { 
+			        //img: imgData 
+			        //}, 
+			        //dataType: 'json', 
+			        //type: 'post', 
+			        //timeout: 10000, 
+			        //success: function(data) { 
+			        //mui.toast('上传成功',{ 
+			            //duration:'long', 
+			            //type:'div' 
+			        //}); 
+			                //document.getElementById('head-img').src = imgPath; 
+			        //document.getElementById('head-img1').src = imgPath; 
+			        //document.getElementById('head-img2').src=imgPath; 
+			        //},  
+			            //error: function(xhr, type, errorThrown) { 
+			        //mui.toast('网络异常，请稍后再试！'); 
+			        //} 
+			    //}); 
+			    } 
+			} 
+			//将图片压缩转成base64 
+			function getBase64Image(img) { 
+			    var canvas = document.createElement("canvas"); 
+			    var width = img.width; 
+			    var height = img.height; 
+			    // calculate the width and height, constraining the proportions 
+			    if(width > height) { 
+			    if(width > 100) { 
+			        height = Math.round(height *= 100 / width); 
+			        width = 100; 
+			    } 
+			    } else { 
+			    if(height > 100) { 
+			        width = Math.round(width *= 100 / height); 
+			        height = 100; 
+			    } 
+			    } 
+			    canvas.width = width; /*设置新的图片的宽度*/ 
+			    canvas.height = height; /*设置新的图片的长度*/ 
+			    var ctx = canvas.getContext("2d"); 
+			    ctx.drawImage(img, 0, 0, width, height); /*绘图*/ 
+			    var dataURL = canvas.toDataURL("image/png", 0.8); 
+			    return dataURL.replace("data:image/png;base64,", ""); 
+			} 
+		</script>
+		
+	</body>
+
+</html>
