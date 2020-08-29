@@ -1,0 +1,102 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>交易管理</title>
+		<meta name="viewport" content="width=device-width,initia l-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="../css/reset.css"/>
+		<link rel="stylesheet" type="text/css" href="../css/style.css"/>
+		<link rel="stylesheet" type="text/css" href="../css/common.css"/>
+		<link rel="stylesheet" type="text/css" href="../fonts/iconfont.css"/>
+
+		<link rel="stylesheet" href="http://at.alicdn.com/t/font_1804860_wcw558h33hg.css" />
+		<style type="text/css">
+		.notice a {
+			display: block;
+		}
+		.font-lighter{font-size: 16px;color: #666;}
+		.mui-icon-arrowright{color: #999;}
+		.mui-scroll-wrapper{top: 20px}
+		/*.mui-pull-top-pocket{top: 20px;}*/
+
+			i {padding-top:10px ;}
+			.list-state {
+				background: none;
+				color: #000;
+			}
+			
+			.read {
+				height: 100%;
+			}
+			
+			.delete {
+				height: 100%;
+			}
+		</style>
+	</head>
+	<body>
+		
+		<header class="mui-bar mui-bar-nav">
+				  <span class="index-left">
+				    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+					</span>
+					<h1 class="mui-title">小猪客服</h1>
+					<span class="index-right ui-top-right">
+						<i class="mui-pull-right icon-qingchu1 iconfont" ></i>
+						<i class="mui-pull-right icon-laji iconfont" ></i>
+					  
+					</span>
+		</header>
+		
+		<!--列表部分 start-->
+		<div class="pad-lr-10 pad-top-70" id="app">
+			
+			
+		</div>
+		<!--合同列表部分 end-->
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/jquery-1.7.2.min.js"></script>
+		<script src="../js/all.js"></script>
+		<script src="../js/vue.min.js"></script>
+		<script>
+			
+			mui.init({
+				gestureConfig: {
+				        longtap: true, //默认为false
+								longtap: true
+				      },
+				
+			});
+			
+			var vm = new Vue({
+				el: '#app',
+				data(){
+					return{
+						
+					}
+				},
+				methods: {
+					
+				},
+				created(){
+					mui.plusReady(()=>{
+						let subpage_style = {
+							top: '64px',
+							bottom: '0px',
+							styles: {
+								"render": "always"
+							}
+						};
+						
+						let self = plus.webview.currentWebview();
+						let meiqiaChild = plus.webview.create('meiqia.html', 'meiqia.html', subpage_style);
+						self.append(meiqiaChild);
+					})
+					
+				}
+			})
+		</script>
+	</body>
+
+</html>

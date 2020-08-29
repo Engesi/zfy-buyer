@@ -238,7 +238,7 @@
 					</div>
 					</div>
 					<div style="display: flex;">
-					<a href="notice-detail.html" withTitle="false" id="xiaozhu" @tap="clickLeft('xiaozhu', 7)" @swipeleft="turnLeft('xiaozhu')"  @swiperight="turnRight('xiaozhu')" class="noticeLeft">
+					<a href="xiaozhu-detail.html" withTitle="false" id="xiaozhu" @tap="clickLeft('xiaozhu', 7)" @swipeleft="turnLeft('xiaozhu')"  @swiperight="turnRight('xiaozhu')" class="noticeLeft">
 						<li class="mui-col-sm-12 mui-col-xs-12" >
 							<div class="icon fl">
 								<img src="../images/iockefu.png" class="fl" />
@@ -275,6 +275,9 @@
 		<script src="../js/vue.min.js"></script>
 		
 		<script>
+			
+			
+			
 			mui.init({
 				gestureConfig: {
 				        longtap: true, //默认为false
@@ -343,6 +346,7 @@
 							$(`#${id}Right`).hide();
 						}
 						localStorage.setItem('noticeType', type);
+						
 					},
 					clickRight(id,type){
 						$(`#${id}`).css("transform","translate3d(0%, 0px, 0px)");
@@ -429,9 +433,11 @@
 										
 									}
 								})
-					}
+					},
+					
 				},
 				created(){
+					
 					statis('1', 'notice.html', '查看消息列表页');
 					mui.plusReady(()=>{
 						$('.noticeRight').hide();
@@ -454,9 +460,9 @@
 				},4000)
 			}
 			
-		window.addEventListener('refresh', function (event) {
+		/* window.addEventListener('refresh', function (event) {
 			location.reload()
-		 })
+		 }) */
 		 
 		 window.addEventListener('close', function (event) {
 		 	plus.webview.getWebviewById('notice-detail.html').close();
